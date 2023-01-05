@@ -22,6 +22,10 @@ Function handle
 			
 			$handled:=This:C1470.appleAppSiteAssociation()
 			
+		: ($1="/.well-known/assetlinks.json")
+		
+			$handled:=This:C1470.androidAssetLinks()
+			
 		: ($1=String:C10(This:C1470.activationPath))
 			
 			$handled:=Activate Sessions($1).success
@@ -85,4 +89,14 @@ Function appleAppSiteAssociation
 /* Provide some information if web page opening by mobile app, like dataclass or entity */
 Function getContext()->$context : cs:C1710.WebContext
 	$context:=cs:C1710.WebContext.new()
+
+/*
+Send app information to support android applinks
+https://developer.android.com/training/app-links/verify-android-applinks
+*/
+Function androidAssetLinks() -> $handled: Bool
+    var $info: Object
+    $info:=New object:C1471()
+    WEB SEND TEXT:C677(JSON Stringify:C1217($info; *))
+    $handled:=True:C214
 	
